@@ -27,7 +27,7 @@ export default function PriceManagement() {
     setBus(null);
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/buses/by-number/${busNumber}`
+        `https://bus-booking-backend-rk6y.onrender.com/api/buses/by-number/${busNumber}`
       );
       if (!res.data || res.data.message) { alert("Bus not found"); return; }
       setBus(res.data);
@@ -58,7 +58,7 @@ export default function PriceManagement() {
 
   try {
     const res = await axios.put(
-  `http://localhost:5000/api/buses/price/${bus._id}`,  
+  `https://bus-booking-backend-rk6y.onrender.com/api/buses/price/${bus._id}`,  
   { price: Number(newPrice) }
 );
 

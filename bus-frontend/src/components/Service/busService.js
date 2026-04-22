@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://localhost:5000/api/bus";
+const API = "https://bus-booking-backend-rk6y.onrender.com/api/bus";
 
 export const searchBuses = async (criteria) => {
   const res = await axios.get(`${API}/search-buses`, {

@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import downloadTicket from "../BusBooking/DownloadTicket";
 
-const API = "http://localhost:5000";
+const API = "https://bus-booking-backend-rk6y.onrender.com";
 
 const fmt = (d) =>
   new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });

@@ -15,7 +15,7 @@ export default function LiveTracking() {
     const interval = setInterval(async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/buses/location/${trackId}`
+          `https://bus-booking-backend-rk6y.onrender.com/api/buses/location/${trackId}`
         );
 
         const { lat, lng } = res.data.location;

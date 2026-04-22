@@ -33,7 +33,7 @@ export default function AddBus() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/buses/add", {
+      await axios.post("https://bus-booking-backend-rk6y.onrender.com/api/buses/add", {
         ...form,
         price:              Number(form.price),
         seats:              Number(form.seats),
@@ -70,10 +70,10 @@ export default function AddBus() {
     formData.append("file", file);
 
     try {
-      await axios.post("http://localhost:5000/api/buses/upload-csv", formData, {
+      await axios.post("https://bus-booking-backend-rk6y.onrender.com/api/buses/upload-csv", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      alert("CSV Uploaded Successfully 🚀");
+      alert("CSV Uploaded Successfully ");
       setFile(null);
       setFileName("");
       if (fileInputRef.current) fileInputRef.current.value = "";

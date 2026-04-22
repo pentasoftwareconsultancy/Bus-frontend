@@ -16,7 +16,7 @@ export default function BusAdmin() {
   const fetchBuses = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:5000/api/buses");
+      const res = await axios.get("https://bus-booking-backend-rk6y.onrender.com/api/buses");
       setBuses(res.data);
       setLoading(false);
     } catch (error) {
@@ -33,7 +33,7 @@ export default function BusAdmin() {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/buses/delete/${id}`);
+      await axios.delete(`https://bus-booking-backend-rk6y.onrender.com/api/buses/delete/${id}`);
       alert("Bus cancelled successfully");
       fetchBuses();
     } catch (error) {

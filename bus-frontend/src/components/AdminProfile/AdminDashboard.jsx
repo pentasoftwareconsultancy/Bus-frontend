@@ -55,8 +55,8 @@ export default function AdminDashboard() {
   const fetchStats = async () => {
     try {
       const [busRes, bookingRes] = await Promise.all([
-        axios.get("http://localhost:5000/api/buses"),
-        axios.get("http://localhost:5000/api/bookings/all").catch(() => ({ data: { data: [] } })),
+        axios.get("https://bus-booking-backend-rk6y.onrender.com/api/buses"),
+        axios.get("https://bus-booking-backend-rk6y.onrender.com/api/bookings/all").catch(() => ({ data: { data: [] } })),
       ]);
       const buses = busRes.data || [];
       const bookings = bookingRes.data?.data || [];
@@ -77,7 +77,7 @@ export default function AdminDashboard() {
   const fetchUsers = async () => {
     setUsersLoading(true);
     try {
-      const res = await axios.get("http://localhost:5000/api/auth/users");
+      const res = await axios.get("https://bus-booking-backend-rk6y.onrender.com/api/auth/users");
       setUsers(res.data.data || []);
     } catch (e) {
       console.error("Failed to fetch users", e);
@@ -272,7 +272,6 @@ export default function AdminDashboard() {
           <SidebarItem icon={<AiOutlineDashboard />} label="Dashboard" active={active === "Dashboard"} onClick={() => handleNav("Dashboard")} />
           <SidebarItem icon={<FaPlus />} label="Add Bus" active={active === "Add Bus"} onClick={() => handleNav("Add Bus")} />
           <SidebarItem icon={<FaBus />} label="View All Buses" active={active === "View All Buses"} onClick={() => handleNav("View All Buses")} />
-          <SidebarItem icon={<FaEdit />} label="Edit Bus" active={active === "Edit Bus"} onClick={() => handleNav("Edit Bus")} />
           <SidebarItem icon={<FaTrash />} label="Cancel Bus" active={active === "Cancel Bus"} onClick={() => handleNav("Cancel Bus")} />
           <SidebarItem icon={<MdEventSeat />} label="Seat Management" active={active === "Seat Management"} onClick={() => handleNav("Seat Management")} />
           <SidebarItem icon={<FaRoute />} label="Route Management" active={active === "Route Management"} onClick={() => handleNav("Route Management")} />

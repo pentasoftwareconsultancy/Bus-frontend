@@ -26,7 +26,7 @@ export default function RouteManagement() {
     setSuccess(false);
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/buses/by-number/${busNumber}`
+        `https://bus-booking-backend-rk6y.onrender.com/api/buses/by-number/${busNumber}`
       );
 
       if (!res.data || res.data.message) {
@@ -60,7 +60,7 @@ export default function RouteManagement() {
     setLoading(true);
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/buses/update-route/${bus._id}`,
+        `https://bus-booking-backend-rk6y.onrender.com/api/buses/update-route/${bus._id}`,
         {
           from: form.from,
           to: form.to,

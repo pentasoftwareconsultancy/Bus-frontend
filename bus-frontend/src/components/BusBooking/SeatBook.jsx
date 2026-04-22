@@ -51,7 +51,7 @@ const SeatBook = () => {
     setSeatsLoading(true);
     try {
       const date = busData.date || new Date().toISOString().split("T")[0];
-      const res = await axios.get(`http://localhost:5000/api/buses/seat-status/${busData._id}?date=${date}`);
+      const res = await axios.get(`https://bus-booking-backend-rk6y.onrender.com/api/buses/seat-status/${busData._id}?date=${date}`);
       const { totalSeats, bookedSeats } = res.data;
       const total = totalSeats || busData.totalSeats || busData.seats || 40;
       setSeats(Array.from({ length: total }, (_, i) => {
@@ -148,13 +148,13 @@ const SeatBook = () => {
     };
 
     try {
-      const res = await axios.post("http://localhost:5000/api/bookings/create", bookingData);
+      const res = await axios.post("https://bus-booking-backend-rk6y.onrender.com/api/bookings/create", bookingData);
       const newBookingId = res.data?.data?.bookingId || "BK" + Date.now().toString(36).toUpperCase();
 
       try {
         const seatNumbers = selectedSeats.map(s => String(s.seatNumber));
         const travelDate = busData.date || new Date().toISOString().split("T")[0];
-        await axios.post(`http://localhost:5000/api/buses/book-seats/${busData._id}`, { seatNumbers, travelDate });
+        await axios.post(`https://bus-booking-backend-rk6y.onrender.com/api/buses/book-seats/${busData._id}`, { seatNumbers, travelDate });
       } catch (seatErr) {
         console.warn("Seat status update failed (non-critical):", seatErr?.response?.data || seatErr.message);
       }

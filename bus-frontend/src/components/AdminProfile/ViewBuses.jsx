@@ -10,7 +10,7 @@ export default function ViewBuses() {
 
   const fetchBuses = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/buses");
+      const res = await axios.get("https://bus-booking-backend-rk6y.onrender.com/api/buses");
       console.log("BUS DATA FROM API:", res.data);
       console.log("FIRST BUS KEYS:", res.data[0] ? Object.keys(res.data[0]) : "no data");
       setBuses(res.data);

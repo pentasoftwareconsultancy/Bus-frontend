@@ -19,11 +19,11 @@ export default function SeatManagement() {
     setBus(null);
     setSeats([]);
     try {
-      const busRes = await axios.get(`http://localhost:5000/api/buses/by-number/${busNumber}`);
+      const busRes = await axios.get(`https://bus-booking-backend-rk6y.onrender.com/api/buses/by-number/${busNumber}`);
       if (!busRes.data || busRes.data.message) { alert("Bus not found"); return; }
       const busData = busRes.data;
       setBus(busData);
-      const seatRes = await axios.get(`http://localhost:5000/api/buses/seat-status/${busData._id}?date=${date}`);
+      const seatRes = await axios.get(`https://bus-booking-backend-rk6y.onrender.com/api/buses/seat-status/${busData._id}?date=${date}`);
       const { totalSeats, bookedSeats } = seatRes.data;
       const total = totalSeats || busData.seats || 40;
       setSeats(Array.from({ length: total }, (_, i) => {
