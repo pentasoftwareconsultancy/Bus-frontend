@@ -43,7 +43,7 @@ const Hero = () => {
         {
             icon: Mail,
             title: 'E-Mail',
-            details: 'omkarjagtap368@gmail.com',
+            details: 'rajmudratravels@gmail.com',
             color: 'bg-orange-500'
         }
     ];
@@ -125,7 +125,11 @@ const Hero = () => {
                                                 </div>
                                                 <div>
                                                     <p className="font-bold text-gray-900 mb-1">{item.title}</p>
-                                                    <p className="text-gray-600 text-sm">{item.details}</p>
+                                                    {item.title === 'E-Mail' ? (
+                                                        <a href={`mailto:${item.details}`} className="text-orange-500 text-sm hover:underline">{item.details}</a>
+                                                    ) : (
+                                                        <p className="text-gray-600 text-sm">{item.details}</p>
+                                                    )}
                                                 </div>
                                             </div>
                                         );
@@ -257,7 +261,12 @@ const Hero = () => {
 
 
                     </div>
-                    <button className='p-2 m-4 bg-white hover:bg-orange-400  hover:text-white rounded-md font-semibold cursor-pointer '>See Location</button>
+                    <a
+                        href="https://maps.google.com/?q=Pimple+Gurav,Pune,India"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className='inline-block p-2 m-4 bg-white hover:bg-orange-400 hover:text-white rounded-md font-semibold cursor-pointer transition-colors duration-200'
+                    >See Location</a>
 
                 </div>
             </section>
