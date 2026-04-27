@@ -3,7 +3,7 @@ import { MdAccessTime } from "react-icons/md";
 import { FaBus, FaRoute } from "react-icons/fa";
 import { HiOutlineUsers } from "react-icons/hi";
 
-const fetchMetaSummary = () => Promise.resolve({ routes: 0, bookings: 0, topDestinations: [] });
+const fetchMetaSummary = () => Promise.resolve({ routes: 100, bookings: 1000, topDestinations: [5, 10, 15, 20, 25] });
 
 const defaultStats = [
   { key: "heritage",     icon: <MdAccessTime className="w-8 h-8" />,    value: "30+", label: "Years of Heritage",    description: "Over three decades of trust and reliability on the road." },
