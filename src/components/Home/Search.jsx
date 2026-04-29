@@ -1,11 +1,18 @@
 import React, { useState } from "react";
-import { FaMapMarkerAlt, FaSearch, FaCalendarAlt, FaTimes } from "react-icons/fa";
+import { FaMapMarkerAlt, FaSearch, FaTimes } from "react-icons/fa";
 import { MdSwapHoriz } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-import { formatDate } from "../Service/SearchBar";
 import useCities from "../../hooks/useCities";
 
-const today = new Date().toISOString().split("T")[0];
+// Get today's date in LOCAL timezone (not UTC) — prevents IST offset giving yesterday
+const getToday = () => {
+  const d = new Date();
+  const yyyy = d.getFullYear();
+  const mm   = String(d.getMonth() + 1).padStart(2, "0");
+  const dd   = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+};
+const today = getToday();
 
 const Search = () => {
   const cities = useCities();
@@ -14,7 +21,6 @@ const Search = () => {
   const [date, setDate] = useState("");
   const [showFrom, setShowFrom] = useState(false);
   const [showTo,   setShowTo]   = useState(false);
-  const [showDatePicker, setShowDatePicker] = useState(false);
   const [showAuthPopup, setShowAuthPopup] = useState(false);
   const navigate = useNavigate();
 
@@ -30,7 +36,9 @@ const Search = () => {
   };
 
   const handleSearch = () => {
-    if (!from || !to) { alert("Please enter both cities"); return; }
+    if (!from.trim()) { alert("Please enter the departure city (From)"); return; }
+    if (!to.trim())   { alert("Please enter the destination city (To)"); return; }
+    if (!date)        { alert("Please select a departure date"); return; }
     if (!isLoggedIn()) { setShowAuthPopup(true); return; }
     navigate(`/s-to-d?from=${from}&to=${to}&date=${date}`);
   };
@@ -52,7 +60,7 @@ const Search = () => {
           <div className="relative flex items-center gap-3 px-5 py-4 sm:w-1/4 border-b sm:border-b-0 sm:border-r border-gray-300">
             <FaMapMarkerAlt className="text-orange-500 shrink-0" />
             <div className="w-full">
-              <p className="text-xs text-gray-500 font-semibold">FROM</p>
+              <p className="text-xs text-gray-500 font-semibold">FROM <span className="text-red-400">*</span></p>
               <input
                 type="text"
                 value={from}
@@ -86,7 +94,7 @@ const Search = () => {
           <div className="relative flex items-center gap-3 px-5 py-4 sm:w-1/4 border-b sm:border-b-0 sm:border-r border-gray-300">
             <FaMapMarkerAlt className="text-orange-500 shrink-0" />
             <div className="w-full">
-              <p className="text-xs text-gray-500 font-semibold">TO</p>
+              <p className="text-xs text-gray-500 font-semibold">TO <span className="text-red-400">*</span></p>
               <input
                 type="text"
                 value={to}
@@ -109,29 +117,28 @@ const Search = () => {
             </div>
           </div>
 
-          {/* DATE */}
-          <div className="relative px-5 py-4 sm:w-1/4 border-b sm:border-b-0 sm:border-r border-gray-300 flex flex-col justify-center">
-            <p className="text-xs text-gray-500 font-semibold">DEPARTURE</p>
-            <div className="flex items-center gap-2 cursor-pointer" onClick={() => setShowDatePicker(true)}>
-              <FaCalendarAlt className="text-orange-400 text-sm shrink-0" />
-              <span className="font-semibold text-base text-gray-800">
-                {date ? formatDate(date) : <span className="text-gray-400 font-normal text-sm">Select date</span>}
-              </span>
-            </div>
+          {/* DATE — always visible, min=today (local timezone), past dates blocked */}
+          <div className="px-5 py-4 sm:w-1/4 border-b sm:border-b-0 sm:border-r border-gray-300 flex flex-col justify-center">
+            <p className="text-xs text-gray-500 font-semibold">DEPARTURE <span className="text-red-400">*</span></p>
             <input
-              type="date" min={today} value={date}
-              onChange={(e) => { setDate(e.target.value); setShowDatePicker(false); }}
-              onBlur={() => setShowDatePicker(false)}
-              className={`absolute inset-0 opacity-0 cursor-pointer w-full h-full ${showDatePicker ? "block" : "hidden"}`}
-              style={{ zIndex: 10 }}
-              autoFocus={showDatePicker}
+              type="date"
+              min={today}
+              value={date}
+              onChange={(e) => {
+                // Extra guard: reject any date before today even if typed manually
+                if (e.target.value && e.target.value < today) return;
+                setDate(e.target.value);
+              }}
+              className="bg-transparent outline-none font-semibold text-base text-gray-800 cursor-pointer w-full"
             />
           </div>
 
           {/* SEARCH */}
           <div className="flex items-stretch px-3 py-2 sm:py-0">
-            <button onClick={handleSearch}
-              className="self-stretch sm:my-2 w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white px-8 rounded-full flex items-center justify-center gap-2 font-bold text-base transition">
+            <button
+              onClick={handleSearch}
+              className="self-stretch sm:my-2 w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white px-8 rounded-full flex items-center justify-center gap-2 font-bold text-base transition"
+            >
               <FaSearch /> SEARCH
             </button>
           </div>

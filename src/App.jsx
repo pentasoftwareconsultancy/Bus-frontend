@@ -10,7 +10,6 @@ const NO_FOOTER_ROUTES = [
   "/cancellations", "/livetracking", "/admin-dashboard",
 ];
 
-// Show splash only once per browser session
 const hasSeenSplash = sessionStorage.getItem("splashSeen");
 
 function App() {
@@ -27,14 +26,15 @@ function App() {
     <>
       {!splashDone && <SplashScreen onDone={handleSplashDone} />}
 
-      {/* App fades in smoothly once splash is done */}
-      <div
-        style={{
-          opacity: splashDone ? 1 : 0,
-          transition: splashDone ? "opacity 0.6s ease" : "none",
-          visibility: splashDone ? "visible" : "hidden",
-        }}
-      >
+      {/* Black bg behind app prevents white flash during fade-in */}
+      {!splashDone && (
+        <div style={{ position: "fixed", inset: 0, background: "#000", zIndex: 9998, pointerEvents: "none" }} />
+      )}
+
+      <div style={{
+        opacity: splashDone ? 1 : 0,
+        transition: splashDone ? "opacity 0.5s ease" : "none",
+      }}>
         <Header />
         <AppRoutes />
         {showFooter && <Footer />}

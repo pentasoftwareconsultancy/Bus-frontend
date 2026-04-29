@@ -22,11 +22,12 @@ const amenityIcon = (a) => {
 
 const normalizeBusType = (raw = "") => {
   const t = raw.toLowerCase();
+  // IMPORTANT: check "non ac" / "non-ac" BEFORE checking "ac" alone
+  if (t.includes("non ac") || t.includes("non-ac") || t.includes("nonac")) return "Non AC";
   if (t.includes("ac") && t.includes("sleeper")) return "AC Sleeper";
-  if (t.includes("non ac") || t.includes("non-ac")) return "Non AC";
   if (t.includes("ac"))      return "AC";
-  if (t.includes("seater"))  return "Seater";
   if (t.includes("sleeper")) return "Sleeper";
+  if (t.includes("seater"))  return "Seater";
   return raw;
 };
 
@@ -127,7 +128,16 @@ const SearchResult = () => {
     let list = [...allBuses];
 
     if (filters.busTypes.length > 0)
-      list = list.filter((b) => filters.busTypes.some((t) => b.type.toLowerCase().includes(t.toLowerCase())));
+      list = list.filter((b) =>
+        filters.busTypes.some((t) => {
+          // Exact match: "AC" should NOT match "Non AC" or "AC Sleeper" unless explicitly selected
+          if (t === "AC") return b.type === "AC";
+          if (t === "Non AC") return b.type === "Non AC";
+          if (t === "Seater") return b.type === "Seater" || b.type === "AC Seater";
+          if (t === "Sleeper") return b.type === "Sleeper" || b.type === "AC Sleeper";
+          return b.type.toLowerCase().includes(t.toLowerCase());
+        })
+      );
 
     list = list.filter((b) => b.price <= filters.priceRange.max);
 
